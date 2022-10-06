@@ -41,18 +41,19 @@ fastify.route({
     // E.g. check authentication
   },
   handler: async (request, reply) => {
-    console.log(request.headers);
+    console.log(request.headers['x-pasthrough-auth-recipient']);
+    const serverTarget = request.headers['X-pasthrough-auth-target'] || request.query.server
+    const authKey = request.headers['X-pasthrough-auth'] || request.query.token
     const text = request.query.text;
     console.log(text);
     if (text) {
-      if (request.query.server === "dreamstudio") {
+      if (serverTarget.toLowerCase() === "dreamstudio") {
         try {
           const { res, images } = await generateAsync({
             prompt: text,
-            apiKey: "sk-v1OVKYXAhOGh5ojmLZjPi37u2L4wc7R0xvuDqVer4GNwZM4Z",
+            apiKey: authKey,
           });
-          console.log(images);
-          reply.type(images[0].mimeType) // if you don't set the content, the image would be downloaded by browser instead of viewed
+          reply.type(images[0].mimeType)
           reply.send(images[0].buffer)
         } catch (e) {
           console.log(e)
