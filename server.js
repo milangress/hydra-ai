@@ -92,13 +92,16 @@ fastify.route({
         const model = await replicate.models.get(
           "stability-ai/stable-diffusion"
         );
-        console.log(model);
         const prediction = await model.predict({
           prompt: text,
           width: 512,
           num_inference_steps: 20,
         });
+        const swinModel = await replicate.models.get("jingyunliang/swinir")
+        const upscaledImage = await swinModel.predict({image: prediction.pop()})
+
         console.log(prediction);
+        console.log(upscaledImage)
 
         //reply.type('image/png')
         //const stream = got.stream(prediction[0])
@@ -114,7 +117,7 @@ fastify.route({
 
         //reply.send(stream)
 
-        return prediction;
+        return upscaledImage;
       }
       //reply.redirect(prediction[0])
     } else return ["found no prompt :("];
