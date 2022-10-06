@@ -40,9 +40,7 @@ fastify.route({
   },
   handler: async (request, reply) => {
     console.log(request.headers['x-pasthrough-auth-recipient']);
-    let serverTarget = request.headers['x-pasthrough-auth-target'] || request.query.server
-    serverTarget = serverTarget.toString().toLowerCase()
-    console.log('serverTarget: ', serverTarget)
+    let serverTarget = request.headers['x-pasthrough-auth-target'] || request.query.server 
     const authKey = request.headers['x-pasthrough-auth'] || request.query.token
     const text = request.query.text;
     console.log('Prompt: ', text);
