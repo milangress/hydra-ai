@@ -1,7 +1,13 @@
-/**
- * This is the main Node.js server script for your project
- * Check out the two endpoints this back-end API provides in fastify.get and fastify.post below
- */
+const presets = {
+  fast: {
+    steps: 15,
+    diffusion: 'k_euler_ancestral',
+    cfgScale: 10
+  }
+}
+
+
+
 
 import Replicate from "./replicate.js";
 import stability from "stability-client";
@@ -32,6 +38,7 @@ fastify.route({
       text: { type: "string" },
       token: { type: "string" },
       server: { type: "string" },
+      preset: { type: "string" }
     },
   },
   // this function is executed for every request before the handler is executed
@@ -40,9 +47,13 @@ fastify.route({
   },
   handler: async (request, reply) => {
     console.log(request.headers['x-pasthrough-auth-recipient']);
-    let serverTarget = request.headers['x-pasthrough-auth-target'] || request.query.server 
+    let serverTarget = request.headers['x-pasthrough-auth-target'] || request.query.server || 'dreamstudio'
+    serverTarget = serverTarget.toString().toLowerCase()
+    console.log('serverTarget: ', serverTarget)
     const authKey = request.headers['x-pasthrough-auth'] || request.query.token
     const text = request.query.text;
+    const preset = request.query.preset
+    const presetData = preset ? presets[preset] : ''
     console.log('Prompt: ', text);
     if (text) {
       if (serverTarget === "dreamstudio") {
@@ -50,6 +61,7 @@ fastify.route({
           const { res, images } = await generateAsync({
             prompt: text,
             apiKey: authKey,
+            preset
           });
           reply.type(images[0].mimeType)
           reply.send(images[0].buffer)
