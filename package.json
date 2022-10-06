@@ -12,7 +12,7 @@
     "fastify": "^4.7.0",
     "got": "^12.5.1",
     "@fastify/cors": "^8.1.0",
-    "stability-ts": "^1.2.0"
+    "stability-client": "^1.6.0"
   },
   "scripts": {
     "start": "node server.js",

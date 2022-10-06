@@ -4,7 +4,7 @@
  */
 
 import Replicate from "./replicate.js";
-import stability from 'stability-ts';
+import stability from "stability-client";
 const { generateAsync } = stability;
 
 import fetch from "node-fetch";
@@ -49,38 +49,44 @@ fastify.route({
         try {
           const { res, images } = await generateAsync({
             prompt: text,
-            apiKey: 'sk-v1OVKYXAhOGh5ojmLZjPi37u2L4wc7R0xvuDqVer4GNwZM4Z',
+            apiKey: "sk-v1OVKYXAhOGh5ojmLZjPi37u2L4wc7R0xvuDqVer4GNwZM4Z",
           });
           console.log(images);
+          reply.type(images[0].mimeType) // if you don't set the content, the image would be downloaded by browser instead of viewed
+          reply.send(images[0].buffer)
         } catch (e) {
-          // ...
+          console.log(e)
         }
+      
+      } else {
+        
+        const model = await replicate.models.get(
+          "stability-ai/stable-diffusion"
+        );
+        console.log(model);
+        const prediction = await model.predict({
+          prompt: text,
+          width: 512,
+          num_inference_steps: 20,
+        });
+        console.log(prediction);
+
+        //reply.type('image/png')
+        //const stream = got.stream(prediction[0])
+        //console.log(stream)
+
+        //const response = await fetch(prediction[0]);
+        //const myStream = new Readable({
+        //read () {
+        //  this.push(stream)
+        //  this.push(null)
+        //}
+        //})
+
+        //reply.send(stream)
+
+        return prediction;
       }
-
-      const model = await replicate.models.get("stability-ai/stable-diffusion");
-      console.log(model);
-      const prediction = await model.predict({
-        prompt: text,
-        width: 512,
-        num_inference_steps: 20,
-      });
-      console.log(prediction);
-
-      //reply.type('image/png')
-      //const stream = got.stream(prediction[0])
-      //console.log(stream)
-
-      //const response = await fetch(prediction[0]);
-      //const myStream = new Readable({
-      //read () {
-      //  this.push(stream)
-      //  this.push(null)
-      //}
-      //})
-
-      //reply.send(stream)
-
-      return prediction;
       //reply.redirect(prediction[0])
     } else return ["found no prompt :("];
   },
