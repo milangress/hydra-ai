@@ -56,10 +56,10 @@ fastify.route({
     //}
     //})
 
-  //reply.send(stream)
+    //reply.send(stream)
 
-    //return prediction
-      reply.redirect(prediction[0])
+    return prediction
+      //reply.redirect(prediction[0])
     }
     else return ['error']
   }
