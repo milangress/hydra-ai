@@ -40,7 +40,9 @@ fastify.route({
       text: { type: "string" },
       token: { type: "string" },
       server: { type: "string" },
-      preset: { type: "string" }
+      preset: { type: "string" },
+      width: { type: "number" },
+      height: { type: "number" }
     },
   },
   // this function is executed for every request before the handler is executed
