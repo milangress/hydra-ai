@@ -33,7 +33,8 @@ fastify.route({
   schema: {
     // request needs to have a querystring with a `name` parameter
     querystring: {
-      text: { type: 'string' }
+      text: { type: 'string' },
+      token: { type: 'string' }
     }
   },
   // this function is executed for every request before the handler is executed
@@ -47,7 +48,7 @@ fastify.route({
     if(text){
     const model = await replicate.models.get('stability-ai/stable-diffusion');
     console.log(model)
-    const prediction = await model.predict({ text: "test"});
+    const prediction = await model.predict({ prompt: text, width: 768, num_inference_steps: 20});
     console.log(prediction);
     
     //reply.type('image/png')
@@ -67,7 +68,7 @@ fastify.route({
     return prediction
       //reply.redirect(prediction[0])
     }
-    else return ['error']
+    else return ['found no prompt :(']
   }
 })
 
