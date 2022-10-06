@@ -41,7 +41,7 @@ fastify.route({
     // E.g. check authentication
   },
   handler: async (request, reply) => {
-    console.log(request.query);
+    console.log(request.headers);
     const text = request.query.text;
     console.log(text);
     if (text) {
