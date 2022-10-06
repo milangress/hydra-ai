@@ -5,8 +5,10 @@
 
 import Replicate from './replicate.js'
 import fetch from 'node-fetch'
-import { Readable } from 'stream'
-import got from "got"
+//import { Readable } from 'stream'
+//import got from "got"
+import cors from '@fastify/cors'
+
 
 
 
@@ -19,6 +21,10 @@ const replicate = new Replicate({token: token});
 import Fastify from 'fastify'
 const fastify = Fastify({
   logger: true
+})
+
+await fastify.register(cors, { 
+  origin: '*'
 })
 
 fastify.route({
