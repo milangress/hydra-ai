@@ -32,11 +32,12 @@ fastify.route({
   },
   handler: async (request, reply) => {
     
-    const helloWorldModel = await replicate.models.get('replicate/hello-world');
-    console.log(helloWorldModel)
-    const helloWorldPrediction = await helloWorldModel.predict({ text: "test"});
-    console.log(helloWorldPrediction);
-    return { hello: helloWorldPrediction }
+    
+    const model = await replicate.models.get('stability-ai/stable-diffusion');
+    console.log(model)
+    const prediction = await model.predict({ text: "test"});
+    console.log(prediction);
+    return prediction
   }
 })
 
