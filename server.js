@@ -92,15 +92,16 @@ fastify.route({
         const model = await replicate.models.get(
           "stability-ai/stable-diffusion"
         );
-        const prediction = await model.predict({
+        const stableImage = await model.predict({
           prompt: text,
           width: 512,
           num_inference_steps: 20,
-        });
+        })
+        console.log(stableImage);
+        
         const swinModel = await replicate.models.get("jingyunliang/swinir")
-        const upscaledImage = await swinModel.predict({image: prediction.pop()})
+        const upscaledImage = await swinModel.predict({image: stableImage})
 
-        console.log(prediction);
         console.log(upscaledImage)
 
         //reply.type('image/png')
