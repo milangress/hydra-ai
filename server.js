@@ -14,8 +14,6 @@ import cors from "@fastify/cors";
 
 const token = process.env["REP_API"];
 
-const replicate = new Replicate({ token: token }, { pollingInterval: 500 });
-
 import Fastify from "fastify";
 const fastify = Fastify({
   logger: true,
@@ -42,12 +40,14 @@ fastify.route({
   },
   handler: async (request, reply) => {
     console.log(request.headers['x-pasthrough-auth-recipient']);
-    const serverTarget = request.headers['X-pasthrough-auth-target'] || request.query.server
-    const authKey = request.headers['X-pasthrough-auth'] || request.query.token
+    let serverTarget = request.headers['x-pasthrough-auth-target'] || request.query.server
+    serverTarget = serverTarget.toString().toLowerCase()
+    console.log('serverTarget: ', serverTarget)
+    const authKey = request.headers['x-pasthrough-auth'] || request.query.token
     const text = request.query.text;
-    console.log(text);
+    console.log('Prompt: ', text);
     if (text) {
-      if (serverTarget.toLowerCase() === "dreamstudio") {
+      if (serverTarget === "dreamstudio") {
         try {
           const { res, images } = await generateAsync({
             prompt: text,
@@ -60,6 +60,11 @@ fastify.route({
         }
       
       } else {
+        
+        //Replicate
+        
+        const replicate = new Replicate({ token: authKey }, { pollingInterval: 500 });
+
         
         const model = await replicate.models.get(
           "stability-ai/stable-diffusion"
