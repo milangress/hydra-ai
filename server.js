@@ -78,6 +78,7 @@ fastify.route({
             ...presetData,
             width: request.query.width || 512,
             height: request.query.height || 512,
+            noStore: true //So the server does not getoverwelmed
           });
           reply.type(images[0].mimeType);
           reply.send(images[0].buffer);
