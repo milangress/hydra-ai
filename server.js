@@ -15,7 +15,7 @@ import cors from '@fastify/cors'
 
 const token = process.env['REP_API']
 
-const replicate = new Replicate({token: token});
+const replicate = new Replicate({token: token}, {pollingInterval: 500});
 
 
 import Fastify from 'fastify'
