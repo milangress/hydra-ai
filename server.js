@@ -23,7 +23,7 @@ fastify.route({
   schema: {
     // request needs to have a querystring with a `name` parameter
     querystring: {
-      name: { type: 'string' }
+      text: { type: 'string' }
     }
   },
   // this function is executed for every request before the handler is executed
@@ -31,13 +31,17 @@ fastify.route({
     // E.g. check authentication
   },
   handler: async (request, reply) => {
-    
-    
+    console.log(request.query)
+    const text = request.query.text
+    console.log(text)
+    if(text){
     const model = await replicate.models.get('stability-ai/stable-diffusion');
     console.log(model)
     const prediction = await model.predict({ text: "test"});
     console.log(prediction);
     return prediction
+    }
+    else return ['error']
   }
 })
 
