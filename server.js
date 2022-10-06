@@ -44,8 +44,9 @@ fastify.route({
     const prediction = await model.predict({ text: "test"});
     console.log(prediction);
     
-    reply.type('image/png')
-    const stream = got.stream(prediction[0]).pipe(reply.send())
+    //reply.type('image/png')
+    //const stream = got.stream(prediction[0])
+    //console.log(stream)
       
     //const response = await fetch(prediction[0]);
     //const myStream = new Readable({
@@ -55,9 +56,10 @@ fastify.route({
     //}
     //})
 
-  reply.send(stream)
+  //reply.send(stream)
 
     //return prediction
+      reply.redirect(prediction[0])
     }
     else return ['error']
   }
