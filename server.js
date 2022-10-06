@@ -3,6 +3,16 @@ const presets = {
     steps: 10,
     diffusion: 'k_euler_ancestral',
     cfgScale: 10
+  },
+  slow: {
+    steps: 100,
+    diffusion: 'k_euler_ancestral',
+    cfgScale: 10
+  },
+  extreme: {
+    steps: 20,
+    diffusion: 'k_euler_ancestral',
+    cfgScale: 55
   }
 }
 
