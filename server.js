@@ -1,6 +1,8 @@
 const presets = {
   fast: {
-    steps: 15,
+    width: 512,
+    height: 512,
+    steps: 10,
     diffusion: 'k_euler_ancestral',
     cfgScale: 10
   }
@@ -61,7 +63,7 @@ fastify.route({
           const { res, images } = await generateAsync({
             prompt: text,
             apiKey: authKey,
-            preset
+            ...presetData
           });
           reply.type(images[0].mimeType)
           reply.send(images[0].buffer)
