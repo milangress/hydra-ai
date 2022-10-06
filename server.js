@@ -4,6 +4,10 @@
  */
 
 import Replicate from './replicate.js'
+import fetch from 'node-fetch'
+import { Readable } from 'stream'
+
+
 
 const token = process.env['REP_API']
 
@@ -39,7 +43,18 @@ fastify.route({
     console.log(model)
     const prediction = await model.predict({ text: "test"});
     console.log(prediction);
-    return prediction
+    const buffer = await fetch(prediction[0]);
+    const myStream = new Readable({
+    read () {
+      this.push(buffer)
+      this.push(null)
+    }
+  })
+
+  reply.type('image/png')
+  reply.send(myStream)
+
+    //return prediction
     }
     else return ['error']
   }
