@@ -97,8 +97,8 @@ fastify.route({
         );
         const stableImageArray = await model.predict({
           prompt: text,
-          width: request.query.width || 512,
-          height: request.query.height || 512,
+          width: findNearesNumber(request.query.width) || 512,
+          height: findNearesNumber(request.query.height) || 512,
         })
         console.log('stableImageArray', stableImageArray)
         const stableImage = stableImageArray[0]
@@ -123,7 +123,7 @@ fastify.route({
 
         //reply.send(stream)
 
-        return upscaledImage;
+        return [ stableImage ];
       }
       //reply.redirect(prediction[0])
     } else return ["found no prompt :("];
@@ -144,10 +144,7 @@ fastify.listen(
 );
 
 
-function findNearesNumber(number, possibleNumberArray=[128, 256, 512, 768, 1024]) {
-  let arr = [1,16,14,13,6,7,4,5,3,2,19,20,10,4,6]
-  let number = 10
-
+function findNearesNumber(number, possibleNumberArray=[128, 256, 512]) { // 768, 1024
   const distance = (a, t) => Math.abs(t - a);
   possibleNumberArray.sort((a, b) => distance(a, number) - distance(b, number));
   console.log(possibleNumberArray);
