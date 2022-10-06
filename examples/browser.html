@@ -1,0 +1,21 @@
+<html>
+    <head><title>Replicate JS Test</title></head>
+    <body>
+        <script type="module">
+        // You can specify a specific version, branch, or sha: e.g. "https://cdn.jsdelivr.net/gh/nicholascelestin/replicate-js@0.0.6/replicate.js"
+        const Replicate = await import("https://cdn.jsdelivr.net/gh/nicholascelestin/replicate-js/replicate.js")
+        console.log(Replicate)
+    
+        // set REPLICATE_API_TOKEN environment variable
+        // run: node ../cors-proxy.js
+        const replicate = new Replicate({proxyUrl: 'http://localhost:3000/api', pollingInterval: 1000});
+        const helloWorldModel = await replicate.models.get('replicate/hello-world');
+        const helloWorldPrediction = await helloWorldModel.predict({ text: "test"});
+        console.log('hello world prediction:', helloWorldPrediction);
+    
+        const dalleMiniModel = await replicate.models.get('kuprel/min-dalle')
+        const dalleMiniImage = await dalleMiniModel.predict({text: "avocado armchair", grid_size: 1});
+        console.log('min dalle prediction:', dalleMiniImage);
+        </script>
+    </body>
+</html>
