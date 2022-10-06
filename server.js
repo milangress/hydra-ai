@@ -6,6 +6,8 @@
 import Replicate from './replicate.js'
 import fetch from 'node-fetch'
 import { Readable } from 'stream'
+import got from "got"
+
 
 
 
@@ -13,8 +15,6 @@ const token = process.env['REP_API']
 
 const replicate = new Replicate({token: token});
 
-// If you set the REPLICATE_API_TOKEN environment variable, you do not need to provide a token to the constructor.
-// const replicate = new Replicate();
 
 import Fastify from 'fastify'
 const fastify = Fastify({
@@ -43,16 +43,19 @@ fastify.route({
     console.log(model)
     const prediction = await model.predict({ text: "test"});
     console.log(prediction);
-    const buffer = await fetch(prediction[0]);
-    const myStream = new Readable({
-    read () {
-      this.push(buffer)
-      this.push(null)
-    }
-  })
+    
+    reply.type('image/png')
+    const stream = got.stream(prediction[0]).pipe(reply.send())
+      
+    //const response = await fetch(prediction[0]);
+    //const myStream = new Readable({
+    //read () {
+    //  this.push(stream)
+    //  this.push(null)
+    //}
+    //})
 
-  reply.type('image/png')
-  reply.send(myStream)
+  reply.send(stream)
 
     //return prediction
     }
