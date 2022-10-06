@@ -105,9 +105,13 @@ fastify.route({
         }
         const stableImage = stableImageArray[0];
         console.log("stableImage", stableImage);
+        
+        const esrganModel = await replicate.models.get("nightmareai/real-esrgan");
+        const upscaledImage = await esrganModel.predict({image: stableImage})
+
 
         reply.type('application/json');
-        reply.send([stableImage]);
+        reply.send([upscaledImage]);
         // return [ stableImage ];
         // reply.redirect(prediction[0])
       }
