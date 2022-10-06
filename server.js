@@ -33,7 +33,6 @@ fastify.route({
   method: "GET",
   url: "/",
   schema: {
-    // request needs to have a querystring with a `name` parameter
     querystring: {
       text: { type: "string" },
       token: { type: "string" },
@@ -43,22 +42,21 @@ fastify.route({
       height: { type: "number" }
     },
   },
-  // this function is executed for every request before the handler is executed
-  preHandler: async (request, reply) => {
-    // E.g. check authentication
-  },
   handler: async (request, reply) => {
-    console.log(request.headers['x-pasthrough-auth-recipient']);
     let serverTarget = request.headers['x-pasthrough-auth-target'] || request.query.server || 'dreamstudio'
     serverTarget = serverTarget.toString().toLowerCase()
     console.log('serverTarget: ', serverTarget)
+    
     const authKey = request.headers['x-pasthrough-auth'] || request.query.token
+    
     const text = request.query.text;
+    console.log('Prompt: ', text);
+    
     const preset = request.query.preset
     const presetData = preset ? presets[preset] : ''
     console.log(presetData)
-    console.log('Prompt: ', text);
-    if (text) {
+    
+    if (text && authKey) {
       if (serverTarget === "dreamstudio") {
         try {
           const { res, images } = await generateAsync({
