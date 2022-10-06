@@ -1,16 +1,19 @@
 const presets = {
   fast: {
     steps: 10,
+    num_inference_steps: 10,
     diffusion: 'k_euler_ancestral',
     cfgScale: 10
   },
   slow: {
     steps: 100,
+    num_inference_steps: 100,
     diffusion: 'k_euler_ancestral',
     cfgScale: 10
   },
   extreme: {
     steps: 20,
+    num_inference_steps: 20,
     diffusion: 'k_euler_ancestral',
     cfgScale: 55
   }
@@ -92,17 +95,19 @@ fastify.route({
         const model = await replicate.models.get(
           "stability-ai/stable-diffusion"
         );
-        const stableImage = await model.predict({
+        const stableImageArray = await model.predict({
           prompt: text,
-          width: 512,
-          num_inference_steps: 20,
+          width: request.query.width || 512,
+          height: request.query.height || 512,
         })
-        console.log(stableImage);
+        console.log('stableImageArray', stableImageArray)
+        const stableImage = stableImageArray[0]
+        console.log('stableImage', stableImage);
         
         const swinModel = await replicate.models.get("jingyunliang/swinir")
         const upscaledImage = await swinModel.predict({image: stableImage})
 
-        console.log(upscaledImage)
+        console.log('upscaledImage', upscaledImage)
 
         //reply.type('image/png')
         //const stream = got.stream(prediction[0])
@@ -137,3 +142,14 @@ fastify.listen(
     fastify.log.info(`server listening on ${address}`);
   }
 );
+
+
+function findNearesNumber(number, possibleNumberArray=[128, 256, 512, 768, 1024]) {
+  let arr = [1,16,14,13,6,7,4,5,3,2,19,20,10,4,6]
+  let number = 10
+
+  const distance = (a, t) => Math.abs(t - a);
+  possibleNumberArray.sort((a, b) => distance(a, number) - distance(b, number));
+  console.log(possibleNumberArray);
+  return possibleNumberArray[0]
+}
