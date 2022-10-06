@@ -56,6 +56,7 @@ fastify.route({
     const text = request.query.text;
     const preset = request.query.preset
     const presetData = preset ? presets[preset] : ''
+    console.log(presetData)
     console.log('Prompt: ', text);
     if (text) {
       if (serverTarget === "dreamstudio") {
