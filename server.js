@@ -97,33 +97,15 @@ fastify.route({
         );
         const stableImageArray = await model.predict({
           prompt: text,
-          width: findNearesNumber(request.query.width) || 512,
-          height: findNearesNumber(request.query.height) || 512,
+          //width: findNearesNumber(request.query.width) || 512,
+          //height: findNearesNumber(request.query.height) || 512,
         })
-        console.log('stableImageArray', stableImageArray)
+        if(stableImageArray == null) throw new Error('Replicate Failed')
         const stableImage = stableImageArray[0]
         console.log('stableImage', stableImage);
-        
-        const swinModel = await replicate.models.get("jingyunliang/swinir")
-        const upscaledImage = await swinModel.predict({image: stableImage})
 
-        console.log('upscaledImage', upscaledImage)
-
-        //reply.type('image/png')
-        //const stream = got.stream(prediction[0])
-        //console.log(stream)
-
-        //const response = await fetch(prediction[0]);
-        //const myStream = new Readable({
-        //read () {
-        //  this.push(stream)
-        //  this.push(null)
-        //}
-        //})
-
-        //reply.send(stream)
-
-        return [ stableImage ];
+        reply.send([ stableImage ]),
+        //return [ stableImage ];
       }
       //reply.redirect(prediction[0])
     } else return ["found no prompt :("];
