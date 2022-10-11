@@ -15,7 +15,7 @@ keyDreamstudio.value = "YOUR Dreamstudio API KEY"
 keyReplicate.value = "YOUR Replicate API KEY"
 settings.value.server = "Replicate"
 
-s0.initAi('an closeup of a hydra', 'extreme', 10000000)
+s0.initAi('an closeup of a hydra')
 ```
 
 The reference to your key `keyDreamstudio.value = "YOUR Dreamstudio API KEY"` can (and should) be removed afterwards
@@ -24,7 +24,7 @@ The reference to your key `keyDreamstudio.value = "YOUR Dreamstudio API KEY"` ca
 ```Js
 await loadScript('https://hydra-ai-milan.glitch.me/ai.js')
 
-s0.initAi('an closeup of a hydra', 'extreme', 10000000)
+s0.initAi('an closeup of a hydra')
 
 src(s0).out()
 
