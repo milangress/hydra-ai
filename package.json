@@ -17,11 +17,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "tsc",
-    "build:watch": "tsc --watch",
-    "test:unit": "ava replicate.test.ts",
-    "test:e2e-node": "ava replicate.node.e2e.ts --timeout=5m",
-    "test:e2e-browser": "ava replicate.browser.e2e.ts --timeout=5m",
-    "test:all": "npm run test:unit && npm run test:e2e-node && npm run test:e2e-browser"
+    "build:watch": "tsc --watch"
   },
   "repository": {
     "type": "git",
