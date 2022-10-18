@@ -15,7 +15,7 @@ keyDreamstudio.value = "YOUR Dreamstudio API KEY"
 keyReplicate.value = "YOUR Replicate API KEY"
 settings.value.server = "Replicate"
 
-s0.initAi('an closeup of a hydra')
+s0.initAi('a closeup of a hydra')
 ```
 
 The reference to your key `keyDreamstudio.value = "YOUR Dreamstudio API KEY"` can (and should) be removed afterwards
@@ -26,7 +26,7 @@ It gets saved in your local storage, which is not really secure and could be sto
 ```Js
 await loadScript('https://hydra-ai-milan.glitch.me/ai.js')
 
-s0.initAi('an closeup of a hydra')
+s0.initAi('a closeup of a hydra')
 
 src(s0).out()
 
