@@ -1,9 +1,8 @@
 {
-  "name": "replicate-js",
-  "version": "0.0.7",
-  "description": "WIP Replicate JS Client",
+  "name": "ai-proxy-hydra",
+  "version": "0.0.1",
+  "description": "ai proxy hydra",
   "main": "server.js",
-  "types": "replicate.d.ts",
   "type": "module",
   "dependencies": {
     "@fastify/cors": "^8.1.0",
@@ -20,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/nicholascelestin/replicate-js.git"
   },
-  "author": "Nicholas Celestin",
+  "author": "Milan Gress",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/nicholascelestin/replicate-js/issues"
